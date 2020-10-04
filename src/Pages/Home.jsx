@@ -34,7 +34,7 @@ const Home = () => {
           align="center"
         >
           <Heading color="white" textAlign="center">
-            Demo school management system with
+            School management system with
           </Heading>
           <Heading color="white" textAlign="center">
             FaunaDB awesomeness
