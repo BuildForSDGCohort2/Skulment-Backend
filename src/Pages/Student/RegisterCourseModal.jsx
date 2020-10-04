@@ -43,6 +43,17 @@ const RegisterCourseModal = ({
 
   const animatedComponents = makeAnimated();
 
+  const handleChange = (values, actionMeta) => {
+    if (actionMeta.action === "remove-value") {
+      setSelectedCourses(
+        selected_courses.filter((course) => course !== actionMeta.removedValue)
+      );
+    }
+    if (actionMeta.action === "select-option") {
+      setSelectedCourses(values);
+    }
+  };
+
   React.useEffect(() => {
     selectComponentData(user_id, secret)
       .then((data) => {
@@ -64,12 +75,22 @@ const RegisterCourseModal = ({
   const handleSubmit = (event) => {
     setRegistering(true);
     event.preventDefault();
-    /* TODO: Add registerCourses function below */
-
+    registerCourses(selected_courses, secret)
+      .then((newCourses) => {
+        toast.success("courses registered successfully");
+        setRegistering(false);
+        setCourses([]);
+        setSelectedCourses([]);
+        addToCourses(newCourses);
+        onClose();
+      })
+      .catch((error) => {
+        setRegistering(false);
+        toast.error(error.message);
+      });
   };
 
   /* TODO: Add onChange handler here */
-
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -82,9 +103,14 @@ const RegisterCourseModal = ({
             <FormControl mt={4}>
               <FormLabel htmlFor="courses">Course to register</FormLabel>
               {!loading ? (
-                // TODO: Remove the placeholder and add react-select
-                <>placeholder</>
-
+                <Select
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  options={courses}
+                  value={selected_courses}
+                  onChange={handleChange}
+                />
               ) : (
                 <Loader />
               )}

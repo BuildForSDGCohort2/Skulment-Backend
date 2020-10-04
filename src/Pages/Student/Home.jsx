@@ -35,8 +35,6 @@ const Home = () => {
           Hi, {capitalize(user.nickname.split('.')[0])}
         </Heading>
         <Text color="typography.gray-1">Welcome Back</Text>
-
-        <Text color="typography.gray-1">Secret: {secret}</Text>
       </Box>
 
       {!loading ? (
